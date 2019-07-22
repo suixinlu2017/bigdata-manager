@@ -1,2 +1,5 @@
 rootProject.name = 'bigdata-manager'
 
+include ':back-end-service'
+
+project(':back-end-service').projectDir = "$rootDir/back-end-service" as File

@@ -1,3 +1,66 @@
-group 'com.lx'
-version '1.0-SNAPSHOT'
+buildscript {
+    ext {
+        springBootVersion = '2.0.8.RELEASE'
+    }
+    repositories {
+        mavenLocal()
+        maven {
+            url "http://maven.aliyun.com/nexus/content/groups/public"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        //classpath("se.transmode.gradle:gradle-docker:1.2")
+    }
+}
 
+// 公司Maven私服地址
+def lxMavenUrl = 'http://10.1.220.235:9091'
+// 当前项目环境
+def profile = ''
+
+/*********公共变量****************/
+apply from: 'config.gradle'
+
+/*********公共依赖****************/
+allprojects {
+    apply plugin: 'maven'
+    group = "com.lx"
+    version = '2.2.0-SNAPSHOT'
+}
+
+subprojects {
+    apply plugin: 'java'
+    //apply plugin: 'docker'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+    artifacts {
+        archives sourcesJar
+    }
+
+    repositories {
+        mavenLocal()
+        maven {
+            url "${lxMavenUrl}/repository/maven-public/"
+        }
+
+    }
+    dependencies {
+        annotationProcessor 'org.projectlombok:lombok:1.18.6'
+        compileOnly 'org.projectlombok:lombok:1.18.6'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.6'
+        testCompileOnly 'org.projectlombok:lombok:1.18.6'
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+    }
+}

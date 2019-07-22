@@ -2,3 +2,19 @@ server:
   port: 8080
   servlet:
     context-path: /demo
+
+spring:
+  application:
+    name: back-end-service
+    #  redis:
+    #    database: 0
+    #    host: 10.1.220.235
+    #    port: 6379
+   #    password:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bigdata_combine?useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: 123456
+#  flyway:
+#    baseline-on-migrate: true
